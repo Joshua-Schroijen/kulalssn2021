@@ -1,0 +1,1 @@
+spark-submit --class "DetectCommunities.DetectCommunities" --master local[*] Code/target/scala-2.12/community-detection-project_2.12-1.0.jar
