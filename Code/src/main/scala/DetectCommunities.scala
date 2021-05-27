@@ -8,10 +8,16 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrameReader
 
 object DetectCommunities {
+  /*
   val testDatasetFilename = "TestDataset\\test_graph.csv"
   val caselawDatasetFilename = "CaselawDataset\\citations.csv"
   val twitterDatasetFilename = "TwitterDataset\\users.csv"
-  val facebookDatasetFilename = "FacebookDataset\\pages.csv"
+  val facebookDatasetFilename = "FacebookDataset\\pages.csv" */
+  val testDatasetFilename = "s3://kulalssn/TestDataset/test_graph.csv"
+  //val caselawDatasetFilename = "s3://kulalssn/TestDataset/test_graph.csv"
+  val caselawDatasetFilename = "s3://kulalssn/CaselawDataset/citations.csv"
+  val twitterDatasetFilename = "s3://kulalssn/TwitterDataset/users.csv"
+  val facebookDatasetFilename = "s3://kulalssn/FacebookDataset/pages.csv"
 
   var ss: SparkSession = _;
 
@@ -24,19 +30,16 @@ object DetectCommunities {
 
     this.ss = SparkSession.builder.appName("Community detection").config("spark.serializer", "org.apache.spark.serializer.KryoSerializer").getOrCreate()
 
-    //val caselaw = loadCaselaw(ss)
-    //newmanGirvan(caselaw, "caselaw")
-
+    val t1 = System.nanoTime
     val caselaw = loadCaselaw(ss)
     louvain(caselaw, "caselaw")
-    /*
-    newmanGirvan(caselaw, "caselaw")
+    //newmanGirvan(caselaw, "caselaw")
     val twitter = loadTwitter(ss)
     louvain(twitter, "twitter")
-    newmanGirvan(twitter, "twitter")
+    //newmanGirvan(twitter, "twitter")
     val facebook = loadFacebook(ss)
     louvain(facebook, "facebook")
-    newmanGirvan(facebook, "facebook") */
+    //newmanGirvan(facebook, "facebook")
 
     this.ss.stop()
 
